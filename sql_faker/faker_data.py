@@ -1,17 +1,7 @@
 from faker import Faker
-from sql_faker.prizes import one_value_prizes, random_range_prizes
 
 faker_en = Faker()
 faker_zh = Faker('zh_CN')
-
-
-def value_and_null(number: int, value: int | str) -> None | str:
-    """ 
-    设置返回value的概率 
-    :number null 加 value 的总数 
-    :value 值
-    """
-    return value if one_value_prizes([i for i in range(1, number + 1)]) == 1 else None
 
 
 def is_chinese(chinese: bool) -> Faker:
@@ -107,15 +97,3 @@ def company(chinese: bool = True) -> str:
 def address(chinese: bool = True) -> str:
     """ 地址 """
     return is_chinese(chinese).address()
-
-
-def insert(table_name: str, data: dict[str, str | int]) -> str:
-    """ 根据data 生成 insert sql语句 """
-    column = ','.join(data.keys())
-    value = ','.join([str(item) if type(item) == int else f"'{item}'" for item in data.values()])
-    return f'insert into {table_name}({column}) values({value});'
-
-
-def update(table_name: str, set_data: dict[str, str | int], where_data: dict[str, str | int]) -> str:
-    """ 根据data 生成 update sql语句 """
-    # return f'update {table_name} set {",".join([ for key, value in set_data.popitem()])};'
