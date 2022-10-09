@@ -1,8 +1,15 @@
-from sql_faker.prizes import one_value_prizes
+from sql_faker.prizes import one_value_prizes, zero_to_one_prizes
+
+
+def value_and_null(value: int | str, probability: float) -> None | str:
+    """ 设置返回 value 的概率，0~1之间的浮点数，根据概率返回 None 还是 值 """
+    number = zero_to_one_prizes()
+    print(number)
+    return value if number >= probability else None
 
 
 def range_data(func, number: int, *args) -> 'func':
-    """ 传入一个方法，然后使用这个方法生成几个值，在这几个值中随机返回内容 """
+    """ 传入一个方法，然后使用这个方法生成几个值，返回一个函数，功能：在这几个值中随机返回内容 """
     data_array = [func(*args) for _ in range(number)]
 
     def func() -> str:
@@ -28,24 +35,17 @@ def decorator_func_sugar(template: dict) -> dict[str, str | int]:
     return data
 
 
+def decorator_func_sugar_params(template: dict, **kwargs) -> dict[str, str | int]:
+    """ 在 decorator_func_sugar 基础上支持 key=value 方式添加参数，value 必须是 decorator_func 包装后返回的函数"""
+    data = decorator_func_sugar(template)
+    for key, value in kwargs.items():
+        data[key] = value
+    return data
+
+
 def build(template: dict[str, decorator_func]) -> dict[str, str | int]:
     """ 使用模板生成假数据 """
     data = {}
     for key, value in template.items():
         data[key] = value()
     return data
-
-
-def value_and_null(number: int, value: int | str) -> None | str:
-    """ 
-    设置返回value的概率 
-    :number null 加 value 的总数 
-    :value 值
-    """
-    return value if one_value_prizes([i for i in range(1, number + 1)]) == 1 else None
-
-
-
-
-
-

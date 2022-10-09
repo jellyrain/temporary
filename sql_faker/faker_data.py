@@ -97,3 +97,31 @@ def company(chinese: bool = True) -> str:
 def address(chinese: bool = True) -> str:
     """ 地址 """
     return is_chinese(chinese).address()
+
+
+def postcode(chinese: bool = True) -> str:
+    """ 获取邮编 """
+    return is_chinese(chinese).postcode()
+
+
+def license_plate(chinese: bool = True) -> str:
+    """ 获取车牌照 """
+    return is_chinese(chinese).license_plate()
+
+
+def color() -> dict:
+    """ 返回一个对象，返回不同颜色的生成方法 """
+    faker = faker_en
+    return {
+        'color_name': faker.license_plate,
+        'hex_color': faker.hex_color,
+        'rgb_color': faker.rgb_color,
+        'rgb_css_color': faker.rgb_css_color,
+        'safe_color_name': faker.safe_color_name,
+        'safe_hex_color': faker.safe_hex_color
+    }
+
+
+def md5(raw_output: bool = False) -> str:
+    """ 随机生成 md5 值 """
+    return faker_en.md5(raw_output)

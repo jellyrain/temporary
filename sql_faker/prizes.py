@@ -45,4 +45,5 @@ def upsat_the_order_and_group(arr, length):
     return result
 
 
-__all__ = ['one_value_prizes', 'one_index_prizes', 'sample_prizes', 'upsat_the_order', 'upsat_the_order_group']
+__all__ = ['zero_to_one_prizes', 'random_range_prizes', 'one_value_prizes', 'one_index_prizes', 'sample_prizes',
+           'upsat_the_order', 'upsat_the_order_and_group']
