@@ -1,4 +1,5 @@
 from time import sleep
+from tkinter import N
 import pywifi
 from pywifi import const, Profile
 from pywifi.iface import Interface
@@ -40,7 +41,7 @@ def scan_port(interface: Interface, scan_time: int = 4) -> list[dict[str, Profil
     return interface_data
 
 
-def connect(wifi: Profile):
+def create_profile(wifi: Profile) -> Profile:
     """ 创建连接对象 """
     profile = pywifi.Profile()
     # 编辑连接对象
@@ -48,3 +49,22 @@ def connect(wifi: Profile):
     profile.auth = wifi.auth
     profile.akm = wifi.akm
     profile.cipher = const.CIPHER_TYPE_CCMP
+    return profile
+
+
+def connect(interface: Interface, profile: Profile, keyword: str, sleep_time: float = 2.0) -> bool:
+    """ 连接 wifi """
+    # 断掉所有 wifi 连接
+    interface.disconnect()
+    profile = create_profile(profile)
+    # 输入密码
+    profile.key = keyword
+    # 删除所有连接的wifi文件
+    interface.remove_all_network_profiles()
+    # 配置新的连接文件
+    tep_profile = interface.add_network_profile(profile)
+    interface.connect(tep_profile)
+    # 等待连接
+    sleep(sleep_time)
+    return interface.status() == const.IFACE_CONNECTED
+
