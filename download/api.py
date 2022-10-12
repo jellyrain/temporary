@@ -5,6 +5,7 @@ from os import system, popen
 
 def decorator_cmd(cmd: str):
     """ 包装刷数据方法以便 字典模板生成不同数据可以使用 """
+
     def t():
         return system(cmd)
 
@@ -58,3 +59,12 @@ def str_json(context: str, url: str) -> dict:
 def get_video(url: str) -> dict:
     """ get_video_quality 和 str_json 一起的语法糖 """
     return str_json(get_video_quality(url), url)
+
+
+def download_video(url: str) -> None:
+    """ get_video 更简化版 自动下载最高清的版本 """
+    video = str_json(get_video_quality(url), url)
+    for key, value in video.items():
+        if type(value) == list:
+            value[0]['download-with']()
+            break
