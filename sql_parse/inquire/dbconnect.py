@@ -34,3 +34,6 @@ class SqlServer:
     def fetchone(self):
         """ 获取一条记录 """
         return self.cursor.fetchone()
+
+
+__all = ['SqlServer']
